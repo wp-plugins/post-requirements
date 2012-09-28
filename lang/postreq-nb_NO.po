@@ -1,0 +1,30 @@
+# Translation of plugin Post Requirements in Norwegian (Bokmål)
+# This file is distributed under the same license as the Administration package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2012-09-25 20:18:52+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: VIM\n"
+
+#: ../postreq.php:30
+msgid "Options"
+msgstr "Innstillinger"
+
+#: ../postreq.php:31
+msgid "Require thumbnails in posts"
+msgstr "Krev fremhevet bilde i innlegg"
+
+#: ../postreq.php:32
+msgid "Require tags in posts"
+msgstr "Krev stikkord i innlegg"
+
+#: ../postreq.php:132
+msgid "Your post does not have a thumbnail. The post was saved as a draft and not published."
+msgstr "Innlegget ditt har ikke fremhevet bilde. Innlegget ble lagret som kladd og ikke publisert."
+
+#: ../postreq.php:135
+msgid "Your post does not have any tags. The post was saved as a draft and not published."
+msgstr "Innlegget ditt har ingen stikkord. Innlegget ble lagret som kladd og ikke publisert."
