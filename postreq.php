@@ -59,19 +59,19 @@ class options_page {
   }
 
   private function add_settings_field($id, $desc, $cb = false, $page = 'postreq',
-    $section = 'postreq-section-main', $args = array()) {
-      if (false === $cb) {
-        $cb = array($this, 'checkbox');
-      }
-      if (empty($args)) {
-        $args = array('name'=>$id,'label_for'=>$id);
-      }
-      add_settings_field($id, __($desc, 'postreq'), $cb, $page, $section, $args);
+  $section = 'postreq-section-main', $args = array()) {
+    if (false === $cb) {
+      $cb = array($this, 'checkbox');
+    }
+    if (empty($args)) {
+      $args = array('name'=>$id,'label_for'=>$id);
+    }
+    add_settings_field($id, __($desc, 'postreq'), $cb, $page, $section, $args);
   }
 
   private function add_settings_section($id, $desc, $cb = false, $page = 'postreq') {
     if (false === $cb) {
-      $cb = function() {};
+      $cb = create_function('', '');
     }
     add_settings_section($id, __($desc, 'postreq'), $cb, $page);
   }
@@ -83,7 +83,7 @@ new options_page;
 /**
 * DO STUFF
 */
-add_filter('wp_insert_post_data', function($data, $postarr) {
+function postreq_insert_post_data($data, $postarr) {
   if ($postarr['ID'] > 0 && $postarr['post_type'] == 'post') {
     $pid = $postarr['ID'];
     $tags = isset($postarr['tax_input']['post_tag']) ? $postarr['tax_input']['post_tag'] : '';
@@ -91,32 +91,38 @@ add_filter('wp_insert_post_data', function($data, $postarr) {
     if (get_option('require-thumbnail') == 1) {
       if (!has_post_thumbnail($pid)) {
         // interrupt WP redirect before saving
-        add_filter('redirect_post_location', function($loc) {
+        function postreq_redirect_post_location_thumb($loc) {
           $loc = remove_query_arg('message', $loc);
           $loc = add_query_arg('custom_message', postreq_custom_message('require-thumbnail'), $loc);
           remove_filter('redirect_post_location', __FUNCTION__, 99);
 
           return $loc;
-        }, 99);
+        }
+
+        add_filter('redirect_post_location', 'postreq_redirect_post_location_thumb', 99);
         // save as draft
         $data['post_status'] = 'draft';
       }
     }
     if (get_option('require-tags') == 1) {
       if (empty($tags)) {
-        add_filter('redirect_post_location', function($loc) {
+        function postreq_redirect_post_location_tags($loc) {
           $loc = remove_query_arg('message', $loc);
           $loc = add_query_arg('custom_message', postreq_custom_message('require-tags'), $loc);
           remove_filter('redirect_post_location', __FUNCTION__, 99);
           return $loc;
-        }, 99);
+        }
+
+        add_filter('redirect_post_location', 'postreq_redirect_post_location_tags', 99);
         // save as draft
         $data['post_status'] = 'draft';
       }
     }
   }
   return $data;
-}, 99, 2);
+}
+
+add_filter('wp_insert_post_data', 'postreq_insert_post_data', 99, 2);
 
 
 /*
@@ -142,8 +148,10 @@ function postreq_custom_message($code) {
   return urlencode($msg);
 }
 
+function postreq_custom_message_print() {
+  echo '<div id="message" class="error"><p>'.urldecode($_GET['custom_message']).'</p></div>';
+}
+
 if (isset($_GET['custom_message']) AND !empty($_GET['custom_message'])) {
-  add_action('admin_notices', function() {
-    echo '<div id="message" class="error"><p>'.urldecode($_GET['custom_message']).'</p></div>';
-  });
+  add_action('admin_notices', 'postreq_custom_message_print');
 }
