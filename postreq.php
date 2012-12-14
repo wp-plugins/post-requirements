@@ -3,7 +3,7 @@
 Plugin Name: Post Requirements
 Plugin URI: http://alexander.karlstad.be/post-requirements
 Description: Set up requirements a post should have before publishing it
-Version: 1.0
+Version: 1.1
 Author: Alexander Karlstad
 Domain Path: /lang/
 Text Domain: postreq
