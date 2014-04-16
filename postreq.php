@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Post Requirements
-Plugin URI: http://alexander.karlstad.be/post-requirements
+Plugin URI: http://wordpress.org/extend/plugins/post-requirements/
 Description: Set up requirements a post should have before publishing it
-Version: 1.1
+Version: 1.1.1
 Author: Alexander Karlstad
 Domain Path: /lang/
 Text Domain: postreq
